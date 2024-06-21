@@ -68,13 +68,9 @@ public class CartController {
      */
     @DeleteMapping("/products/{productId}")
     public ResponseEntity<CommonResponse<?>> deleteCartProduct(
-            @PathVariable Long productId,
-            BindingResult bindingResult
+            @PathVariable Long productId
             //@AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
-        if (bindingResult.hasErrors()) {
-            return getFieldErrorResponseEntity(bindingResult, "장바구니에 상품 추가 실패");
-        }
         try{
             Long response = cartService.deleteCartProduct(productId/*, userDetails.getUser().getId()*/);
             return getResponseEntity(response, "장바구니에 상품 삭제 성공");

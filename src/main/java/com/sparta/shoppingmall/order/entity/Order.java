@@ -1,7 +1,6 @@
 package com.sparta.shoppingmall.order.entity;
 
 import com.sparta.shoppingmall.base.entity.Timestamped;
-import com.sparta.shoppingmall.order.status.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,27 +18,32 @@ public class Order extends Timestamped{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    //@ManyToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "user_id")
-    //private User user;
+    @Column(nullable = false)
+    private String productName;
 
     @Column(nullable = false)
-    private String address;
+    private Long productPrice;
 
-    @Column(nullable = false)
-    private int totalPrice;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status = OrderStatus.PAYING;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_id")
+    private OrderGroup orderGroup;
 
     @Builder
-    public Order(/*User user,*/ String address, int totalPrice) {
-        /*this.user = user;*/
-        this.address = address;
-        this.totalPrice = totalPrice;
+    public Order(String productName, Long productPrice, OrderGroup orderGroup) {
+        this.productName = productName;
+        this.productPrice = productPrice;
+        this.orderGroup = orderGroup;
     }
 
-    public void approvedStatus(){this.status = OrderStatus.APPROVED;}
-    public void canceledStatus(){this.status = OrderStatus.CANCELED;}
+    /**
+     * 주문 그룹생성 시 주문 생성
+     */
+//    public static Order createOrder(OrderGroup orderGroup/*, Product product*/) {
+//        return Order.builder()
+//                .productName(/*product.getName()*/)
+//                .productPricep(/*product.getPrice()*/)
+//                .orderGroup(orderGroup)
+//                .build();
+//    }
+
 }

@@ -31,6 +31,9 @@ public class CartProduct extends Timestamped {
         //this.product = product;
     }
 
+    /**
+     * CartProduct 생성
+     */
     public static CartProduct createCartProduct(Cart cart/*, Product product*/) {
 
         return CartProduct.builder()

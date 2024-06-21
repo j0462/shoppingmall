@@ -62,6 +62,8 @@ public class CartService {
         //Cart cart = User.getCart();
 
         //Page<CartProduct> cartProducts = cartProductRepository.findAllByCartId(cart.getId(), pageable);
+        //장바구니 조회시 상품 상태 체크 후 삭제하는 메서드 추가.
+        //추후 리팩토링 추가로 진행
 
         return CartResponse.builder()
                 //cartId(cart.getId())
