@@ -1,13 +1,17 @@
 package com.sparta.shoppingmall.order.service;
 
+import com.sparta.shoppingmall.cart.entity.CartProduct;
 import com.sparta.shoppingmall.order.dto.OrderListResponseDto;
 import com.sparta.shoppingmall.order.dto.OrderRequestDto;
 import com.sparta.shoppingmall.order.dto.OrderResponseDto;
 import com.sparta.shoppingmall.order.entity.Order;
 import com.sparta.shoppingmall.order.repository.OrderRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +23,10 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     @Transactional
-    public OrderResponseDto createOrder(OrderRequestDto orderRequestDto/*, UserDetailsImpl userDetails*/) {
+    public OrderResponseDto createOrder(
+            @Valid @RequestBody OrderRequestDto orderRequestDto/*,
+            @AuthenticationPrincipal UserDetailsImpl userDetails*/)
+    {
         Order order = Order.builder()
                 /*.user(userDetails.getUser())*/
                 .address(orderRequestDto.getAddress())
@@ -30,24 +37,29 @@ public class OrderService {
         return new OrderResponseDto(order);
     }
 
-    public OrderListResponseDto getOrdersByUserId(/*UserDetailsImpl userDetails*/) {
-        List<Order> orders = orderRepository.findByUserid(1L/*userDetails.getUser().getId()*/);
+    public OrderListResponseDto getOrdersByUserId(
+            /*@AuthenticationPrincipal UserDetailsImpl userDetails*/)
+    {
+        List<OrderResponseDto> orders = orderRepository.findByUserId(1L/*userDetails.getUser().getId()*/);
         return new OrderListResponseDto(orders);
     }
 
     @Transactional
-    public boolean cancelOrder(Long orderid/*, UserDetailsImpl userDetails*/) {
-        Optional<Order> orderOptional = orderRepository.findById(orderid);
-        if (orderOptional.isPresent()) {
-            Order order = orderOptional.get();
-            /*if (order.getUser().getId().equals(userDetails.getUser().getId())) {
+    public Long cancelOrder(
+            Long orderId/*,
+            @AuthenticationPrincipal UserDetailsImpl userDetails*/)
+    {
+        Order order = orderRepository.findById(orderId).orElseThrow(
+                () -> new IllegalArgumentException("해당 주문은 존재하지 않습니다.")
+        );
+
+        /*if (order.getUser().getId().equals(userDetails.getUser().getId())) {
                 order.canceledStatus();
                 orderRepository.save(order);
-                return true;
-            } else {
-                return false;
-            }*/
-        }
-        return false;
+                return order.getUser().getId();
+        } else {
+                throw new new IllegalArgumentException("해당 주문은 존재하지 않습니다.")
+        }*/
+        return 1L;
     }
 }
