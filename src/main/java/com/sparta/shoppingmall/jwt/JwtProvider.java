@@ -38,7 +38,7 @@ public class JwtProvider {
     public static final long REFRESH_TOKEN_TIME = 7 * 24 * 60 * 60 * 1000L;
 
     // JWT secret key
-    @Value("${jwt.secret.key}")
+    @Value("${jwt.secret-key}")
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
