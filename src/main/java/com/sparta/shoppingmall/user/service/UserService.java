@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,7 +30,7 @@ public class UserService {
     private final RefreshTokenService refreshTokenService;
 
     /**
-     * 1. 회원 가입
+     * 회원 가입
      */
     @Transactional
     public SignupResponseDTO createUser(SignupRequestDTO request) {
@@ -44,9 +46,8 @@ public class UserService {
         return new SignupResponseDTO(user);
     }
 
-
     /**
-     * 2. 회원 탈퇴
+     * 회원 탈퇴
      */
     @Transactional
     public Long withdrawUser(WithdrawRequestDTO request, User user) {
@@ -66,7 +67,7 @@ public class UserService {
     }
 
     /**
-     * 4. 로그아웃
+     * 로그아웃
      */
     @Transactional
     public Long logout(Long userId) {
@@ -82,7 +83,7 @@ public class UserService {
 
 
     /**
-     * 5. 회원 조회 (유저 아이디)
+     * 회원 조회 (유저 아이디)
      */
     public EditProfileResponseDTO inquiryUser(Long userId, User user) {
         if(!Objects.equals(user.getId(), userId)) {
@@ -93,7 +94,7 @@ public class UserService {
 
 
     /**
-     * 7. 회원 프로필 수정
+     * 회원 프로필 수정
      */
     @Transactional // 변경할 필드만 수정하고 바꾸지 않은 필드는 기존 데이터를 유지하는 메서드
     public UserResponseDTO editProfile(Long userId, EditProfileRequestDTO request, User user) {
@@ -107,7 +108,7 @@ public class UserService {
     }
 
     /**
-     * 8. 비밀번호 변경
+     * 비밀번호 변경
      */
     @Transactional
     public UserResponseDTO editPassword(EditPasswordRequestDTO request, User user) {
@@ -133,6 +134,33 @@ public class UserService {
         userRepository.save(user);
 
         return new UserResponseDTO(user);
+    }
+
+
+    /**
+     * 회원 전체 조회 - 관리자
+     */
+    public List<AdminUserResponse> getUserList() {
+        List<User> userList = userRepository.findAll();
+        List<AdminUserResponse> response = new ArrayList<>();
+        for (User findUser : userList) {
+            response.add(new AdminUserResponse(findUser));
+        }
+        return response;
+    }
+
+    /**
+     * 회원 정보 수정 - 관리자
+     */
+    @Transactional
+    public AdminUserResponse updateUser(AdminUpdateUserRequest request, Long userId) {
+        User findUser = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("해당 사용자는 존재하지 않습니다.")
+        );
+
+        findUser.adminUpdateUser(request);
+
+        return new AdminUserResponse(findUser);
     }
 
     /**

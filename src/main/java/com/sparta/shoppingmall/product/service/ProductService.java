@@ -10,7 +10,9 @@ import com.sparta.shoppingmall.user.entity.User;
 import com.sparta.shoppingmall.user.entity.UserType;
 import com.sparta.shoppingmall.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService {
@@ -54,11 +57,17 @@ public class ProductService {
 
 
     /**
-     * 상품조회(전체) get api/products
+     * 상품조회(전체) get api/products -> 5개씩 / 정렬 = 최신순, 추천, 판매중 상품
      */
     @Transactional(readOnly = true)
-    public List<ProductResponse> getProducts(Pageable pageable) {
-        Page<Product> products = productRepository.findAllByStatus(pageable, ProductStatus.ONSALE);
+    public List<ProductResponse> getProducts(int page) {
+        Pageable pageable = PageRequest.of(page-1, 5);
+
+        List<ProductStatus> condi = new ArrayList<>();
+        condi.add(ProductStatus.ONSALE);
+        condi.add(ProductStatus.RECOMMAND);
+
+        Page<Product> products = productRepository.findAllByStatusInOrderByCreateAtDescStatusAsc(condi, pageable);
 
         List<ProductResponse> productResponses = new ArrayList<>();
 

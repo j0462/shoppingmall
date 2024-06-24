@@ -22,7 +22,7 @@ public class Product extends Timestamped {
     private Long id;
 
     @Column(nullable = false)
-    private String name;  //상품명
+    private String name; //상품명
 
     @Column(nullable = false)
     private Long price; //가격
@@ -74,12 +74,16 @@ public class Product extends Timestamped {
     }
 
     /**
-     * 주문 정보 삽입
+     * 상품 상태 확인
      */
-    public void updateOrderGroup(OrderGroup orderGroup) {
-        this.orderGroup = orderGroup;
+    public boolean checkProductStatus() {
+         return switch(this.status) {
+            case RECOMMAND -> true;
+            case ONSALE -> true;
+            case COMPLETED -> false;
+            case INPROGRESS -> false;
+        };
     }
-
 
     /**
      * 좋아요 갯수 증가

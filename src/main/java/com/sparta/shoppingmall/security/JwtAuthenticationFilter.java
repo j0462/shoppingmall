@@ -63,13 +63,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException {
         UserDetailsImpl userDetails = (UserDetailsImpl) authResult.getPrincipal();
         UserType role = userDetails.getUser().getUserType();
-//        UserStatus userStatus = userDetails.getUser().getUserStatus();
-//
-//        if(userStatus == UserStatus.WITHDRAW) {
-//            log.error("탈퇴한 사용자입니다.");
-//
-//            writeJsonResponse(response, HttpStatus.NOT_ACCEPTABLE, "탈퇴한 사용자입니다.", authResult.getName());
-//        }
 
         String username = userDetails.getUsername();
         String accessToken = jwtProvider.createToken(username, TOKEN_TIME, role);

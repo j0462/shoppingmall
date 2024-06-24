@@ -1,11 +1,9 @@
 package com.sparta.shoppingmall.user.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 public class LoginRequestDTO {
 
     @NotBlank(message = "아이디를 입력해주세요.")

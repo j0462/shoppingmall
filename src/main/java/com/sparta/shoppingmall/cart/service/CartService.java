@@ -8,7 +8,6 @@ import com.sparta.shoppingmall.cart.entity.CartProduct;
 import com.sparta.shoppingmall.cart.repository.CartProductRepository;
 import com.sparta.shoppingmall.cart.repository.CartRepository;
 import com.sparta.shoppingmall.product.entity.Product;
-import com.sparta.shoppingmall.product.entity.ProductStatus;
 import com.sparta.shoppingmall.product.service.ProductService;
 import com.sparta.shoppingmall.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +37,7 @@ public class CartService {
     public CartProductResponse addCartProduct(CartProductRequest request, User user) {
         Product product = productService.findByProductId(request.getProductId());
         //상품 상태 체크
-        if(!ProductStatus.ONSALE.equals(product.getStatus())){
+        if(product.checkProductStatus()){
             throw new IllegalArgumentException("판매 중인 상품이 아닙니다.");
         }
 
@@ -67,7 +66,7 @@ public class CartService {
         //상품 상태 확인 후 삭제
         List<CartProduct> cartProductList = cart.getCartProducts();
         for (CartProduct cartProduct : cartProductList) {
-            if(!cartProduct.checkProductStatus()){
+            if(!cartProduct.getProduct().checkProductStatus()){
                 cartProductRepository.delete(cartProduct);
             }
         }

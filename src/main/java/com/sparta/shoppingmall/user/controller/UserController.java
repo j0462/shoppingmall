@@ -7,9 +7,12 @@ import com.sparta.shoppingmall.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static com.sparta.shoppingmall.util.ControllerUtil.*;
 
@@ -115,7 +118,7 @@ public class UserController {
     /**
      * 비밀번호 변경
      */
-    @PutMapping("/updatePassword")
+    @PutMapping("/update-password")
     public ResponseEntity<CommonResponse> updatePassword(
             @Valid @RequestBody EditPasswordRequestDTO request,
             @AuthenticationPrincipal UserDetailsImpl userDetails,
@@ -127,6 +130,40 @@ public class UserController {
         try{
             UserResponseDTO response = userService.editPassword(request, userDetails.getUser());
             return getResponseEntity(response, "비밀번호 변경 성공");
+        } catch (Exception e) {
+            return getBadRequestResponseEntity(e);
+        }
+    }
+
+    /**
+     * 회원 전체조회 - 관리자
+     */
+    @Secured("ADMIN")
+    @GetMapping("/admin")
+    public ResponseEntity<CommonResponse> getUserList(
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ){
+        try{
+            List<AdminUserResponse> response = userService.getUserList();
+            return getResponseEntity(response, "회원 전체 조회 성공");
+        } catch (Exception e) {
+            return getBadRequestResponseEntity(e);
+        }
+    }
+
+    /**
+     * 회원 정보 수정 - 관리자
+     */
+    @Secured("ADMIN")
+    @PutMapping("/{userId}/admin")
+    public ResponseEntity<CommonResponse> updateUser(
+            @PathVariable Long userId,
+            @Valid @RequestBody AdminUpdateUserRequest request,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        try{
+            AdminUserResponse response = userService.updateUser(request, userId);
+            return getResponseEntity(response, "회원 전체 조회 성공");
         } catch (Exception e) {
             return getBadRequestResponseEntity(e);
         }

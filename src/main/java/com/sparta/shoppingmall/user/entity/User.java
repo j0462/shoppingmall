@@ -6,6 +6,7 @@ import com.sparta.shoppingmall.comment.entity.Comment;
 import com.sparta.shoppingmall.like.entity.Likes;
 import com.sparta.shoppingmall.order.entity.OrderGroup;
 import com.sparta.shoppingmall.product.entity.Product;
+import com.sparta.shoppingmall.user.dto.AdminUpdateUserRequest;
 import com.sparta.shoppingmall.user.dto.SignupRequestDTO;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -139,4 +140,19 @@ public class User extends Timestamped {
         this.userStatus = status;
     }
 
+    /**
+     * 관리자 - 회원 정보 수정
+     */
+    public void adminUpdateUser(AdminUpdateUserRequest request) {
+        this.username = request.getUsername();
+        this.password = request.getPassword();
+        this.recentPassword = request.getRecentPassword();
+        this.recentPassword2 = request.getRecentPassword2();
+        this.recentPassword3 = request.getRecentPassword3();
+        this.name = request.getName();
+        this.email = request.getEmail();
+        this.address = request.getAddress();
+        this.userType = request.getUserType();
+        this.userStatus = request.getUserStatus();
+    }
 }

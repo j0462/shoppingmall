@@ -7,9 +7,6 @@ import com.sparta.shoppingmall.product.service.ProductService;
 import com.sparta.shoppingmall.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -51,14 +48,10 @@ public class ProductController {
      */
     @GetMapping
     public ResponseEntity<CommonResponse> getProducts(
-            @PageableDefault(
-                    size = 5,
-                    sort = "createdAt",
-                    direction = Sort.Direction.DESC
-            ) Pageable pageable
+            @RequestParam int page
     ) {
         try{
-            List<ProductResponse> response = productService.getProducts(pageable);
+            List<ProductResponse> response = productService.getProducts(page);
             return getResponseEntity(response, "상품 목록 조회 성공");
         } catch (Exception e) {
             return getBadRequestResponseEntity(e);
