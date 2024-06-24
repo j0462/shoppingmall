@@ -1,5 +1,6 @@
 package com.sparta.shoppingmall.cart.entity;
 
+import com.sparta.shoppingmall.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -19,16 +20,24 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "cart_products", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CartProduct> cartProducts = new ArrayList<>();
 
-    //@OneToOne()
-    //private User user;
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Builder
-    public Cart (/*User user, */List<CartProduct> cartProducts) {
-        //this.user = user;
+    public Cart (List<CartProduct> cartProducts, User user) {
         this.cartProducts = cartProducts;
+        this.user = user;
+    }
+
+    /**
+     * 사용자 생성 시 장바구니 동시 생성
+     */
+    public Cart (User user) {
+        this.user = user;
     }
 
     /**
@@ -43,15 +52,6 @@ public class Cart {
      */
     public void removeCartProduct(CartProduct cartProduct) {
         this.cartProducts.remove(cartProduct);
-    }
-
-    /**
-     * 사용자 생성 시 장바구니 동시 생성
-     */
-    public static Cart createCart(/*User user*/) {
-        Cart cart = new Cart();
-        //cart.setUser(user);
-        return cart;
     }
 
 }

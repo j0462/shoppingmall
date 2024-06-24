@@ -9,6 +9,4 @@ import java.util.Optional;
 public interface OrderGroupRepository extends JpaRepository<OrderGroup, Long> {
 
     Optional<List<OrderGroup>> findByUserId(long userId);
-
-    Optional<OrderGroup> findByGroupId(long groupId);
 }

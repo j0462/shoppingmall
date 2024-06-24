@@ -7,9 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 public class CartProductRequest {
 
     @NotBlank(message = "상품 아이디는 필수 값 입니다.")

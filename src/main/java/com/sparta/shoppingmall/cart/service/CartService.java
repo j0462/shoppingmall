@@ -3,71 +3,80 @@ package com.sparta.shoppingmall.cart.service;
 import com.sparta.shoppingmall.cart.dto.CartProductRequest;
 import com.sparta.shoppingmall.cart.dto.CartProductResponse;
 import com.sparta.shoppingmall.cart.dto.CartResponse;
+import com.sparta.shoppingmall.cart.entity.Cart;
 import com.sparta.shoppingmall.cart.entity.CartProduct;
 import com.sparta.shoppingmall.cart.repository.CartProductRepository;
 import com.sparta.shoppingmall.cart.repository.CartRepository;
+import com.sparta.shoppingmall.product.entity.Product;
+import com.sparta.shoppingmall.product.entity.ProductStatus;
+import com.sparta.shoppingmall.product.service.ProductService;
+import com.sparta.shoppingmall.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static com.sparta.shoppingmall.cart.entity.CartProduct.createCartProduct;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class CartService {
 
-    //private final ProductService productService;
+    private final ProductService productService;
     private final CartRepository cartRepository;
     private final CartProductRepository cartProductRepository;
-
-//    public User getUser(Long id) {
-//        return userRepository.findById(id).orElseThrow(
-//                () -> IllegalArgumentException("userId가" + id + " 인 사용자가 존재하지 않습니다.")
-//        );
-//    }
 
     /**
      * 장바구니에 상품 단건 담기
      */
     @Transactional
-    public CartProductResponse addCartProduct(CartProductRequest cartProductRequest/*, Long userId*/) {
+    public CartProductResponse addCartProduct(CartProductRequest request, User user) {
+        Product product = productService.findByProductId(request.getProductId());
+        //상품 상태 체크
+        if(!ProductStatus.ONSALE.equals(product.getStatus())){
+            throw new IllegalArgumentException("판매 중인 상품이 아닙니다.");
+        }
 
-        //userId 체크
-        //User user = getUser(userId);
-        //userId로 cart불러오기 로직 추가
-        //Cart cart = user.getCart();
+        //장바구니가 없으면 생성
+        Cart cart = user.getCart();
+        if (cart == null) {
+            cart = new Cart(user);
+        }
 
-        //상품 상태 체크 로직 추가
-        //productService.checkProductStatus(cartProductRequest.getProductId()) -> return type void
-        //CartProduct cartProduct = createCartProduct(cart/*, product*/);
-        //cart.addCartProduct(cartProduct);
-        //cartRepository.save(cart);
+        //장바구니 안에 상품 중복 확인
+        cart.getCartProducts().forEach(cartProduct -> cartProduct.verifyCartProduct(product.getId()));
 
-        return CartProductResponse.builder()
-                //.id(cartProduct.getId())
-                //.cart(cart)
-                //.product(product)
-                .build();
+        CartProduct cartProduct = createCartProduct(cart, product);
+        cartRepository.save(cart);
+
+        return new CartProductResponse(cartProduct.getId(), cart, product);
     }
 
     /**
      * 장바구니에 상품 리스트 조회
      */
-    @Transactional(readOnly = true)
-    public CartResponse getCartProducts(Pageable pageable/*, Long userId*/) {
-        //user 체크
-        //User user = getUser(userId);
-        //user에서 cart불러오기
-        //Cart cart = User.getCart();
+    @Transactional
+    public CartResponse getCartProducts(Pageable pageable, User user) {
+        Cart cart = user.getCart();
 
-        //Page<CartProduct> cartProducts = cartProductRepository.findAllByCartId(cart.getId(), pageable);
-        //장바구니 조회시 상품 상태 체크 후 삭제하는 메서드 추가.
-        //추후 리팩토링 추가로 진행
+        //상품 상태 확인 후 삭제
+        List<CartProduct> cartProductList = cart.getCartProducts();
+        for (CartProduct cartProduct : cartProductList) {
+            if(!cartProduct.checkProductStatus()){
+                cartProductRepository.delete(cartProduct);
+            }
+        }
+
+        Page<CartProduct> cartProducts = cartProductRepository.findAllByCartId(cart.getId(), pageable);
 
         return CartResponse.builder()
-                //cartId(cart.getId())
-                //.cartProducts(cartProducts)
+                .id(cart.getId())
+                .cartProducts(cartProducts)
                 .build();
     }
 
@@ -75,17 +84,13 @@ public class CartService {
      * 장바구니에 상품 단건 삭제
      */
     @Transactional
-    public Long deleteCartProduct(Long productId) {
-        //user 체크
-        //User user = getUser(userId);
-        //user에서 cart불러오기
-        //Cart cart = User.getCart();
+    public Long deleteCartProduct(Long productId, User user) {
+        Cart cart = user.getCart();
 
         CartProduct cartProduct = cartProductRepository.findByProductId(productId).orElseThrow(
                 () -> new IllegalArgumentException("해당 상품이 장바구니에 없습니다.")
         );
-
-        //cart.removeCartProduct(cartProduct);
+        cart.removeCartProduct(cartProduct);
 
         return cartProduct.getId();
     }

@@ -1,0 +1,32 @@
+### 테스트에 쓸 데이터
+@username = gildong
+@password = Abcdefg123!
+@name = 홍길동
+@email = test@gmail.com
+@address = 대전 서구 둔산동
+
+###회원가입
+POST http://localhost:8080/api/users/signup
+Content-Type: application/json
+
+{
+  "username" : "{{username}}",
+  "password" : "{{password}}",
+  "name" : "{{name}}",
+  "email" : "{{email}}",
+  "address" : "{{address}}"
+}
+
+###로그인
+GET http://localhost:8080/api/users/login
+Content-Type: application/json
+
+{
+  "username" : "{{username}}",
+  "password" : "{{password}}"
+}
+
+> {%
+    client.global.set("Authorization", response.headers.valueOf("Authorization"));
+    client.global.set("RefreshToken", response.headers.valueOf("RefreshToken"));
+%}

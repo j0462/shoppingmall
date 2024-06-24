@@ -1,6 +1,6 @@
 package com.sparta.shoppingmall.order.dto;
 
-import com.sparta.shoppingmall.order.entity.Order;
+import com.sparta.shoppingmall.order.entity.Orders;
 import com.sparta.shoppingmall.order.entity.OrderGroup;
 import com.sparta.shoppingmall.order.entity.OrderStatus;
 import lombok.Getter;
@@ -13,7 +13,7 @@ public class OrderGroupResponseDto {
     private final String address;
     private final Long totalPrice;
     private final OrderStatus status;
-    private final List<Order> orders;
+    private final List<Orders> orders;
 
     public OrderGroupResponseDto(OrderGroup orderGroup) {
         this.groupId = orderGroup.getId();
