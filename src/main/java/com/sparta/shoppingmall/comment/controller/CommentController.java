@@ -38,7 +38,7 @@ public class CommentController {
         }
         try{
             CommentResponse response = commentService.createComment(request, productId, userDetails.getUser());
-            return getResponseEntity(response, "댓글 생성 실패");
+            return getResponseEntity(response, "댓글 생성 성공");
         } catch (Exception e) {
             return getBadRequestResponseEntity(e);
         }

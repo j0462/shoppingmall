@@ -3,7 +3,6 @@ package com.sparta.shoppingmall.like.controller;
 import com.sparta.shoppingmall.base.dto.CommonResponse;
 import com.sparta.shoppingmall.like.dto.LikesRequest;
 import com.sparta.shoppingmall.like.dto.LikesResponse;
-import com.sparta.shoppingmall.like.entity.Likes;
 import com.sparta.shoppingmall.like.service.LikesService;
 import com.sparta.shoppingmall.security.UserDetailsImpl;
 import jakarta.validation.Valid;

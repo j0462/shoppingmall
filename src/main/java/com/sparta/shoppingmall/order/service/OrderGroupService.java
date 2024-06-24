@@ -2,6 +2,7 @@ package com.sparta.shoppingmall.order.service;
 
 import com.sparta.shoppingmall.order.dto.OrderGroupRequestDto;
 import com.sparta.shoppingmall.order.dto.OrderGroupResponseDto;
+import com.sparta.shoppingmall.order.dto.OrdersResponse;
 import com.sparta.shoppingmall.order.entity.OrderGroup;
 import com.sparta.shoppingmall.order.entity.OrderStatus;
 import com.sparta.shoppingmall.order.entity.Orders;
@@ -53,6 +54,7 @@ public class OrderGroupService {
                 .products(productList)
                 .build();
 
+        List<OrdersResponse> ordersResponses = new ArrayList<>();
         //Orders 생성
         for(Product product : productList){
             Orders orders = Orders.builder()
@@ -60,16 +62,16 @@ public class OrderGroupService {
                     .productPrice(product.getPrice())
                     .orderGroup(orderGroup)
                     .build();
+            ordersResponses.add(new OrdersResponse(orders));
 
             // 상품 상태 판매중으로 변경
             product.updateStatus(ProductStatus.INPROGRESS);
             orderGroup.addOrder(orders);
-            //ordersRepository.save(orders);
         }
 
         orderGroupRepository.save(orderGroup);
 
-        return new OrderGroupResponseDto(orderGroup);
+        return new OrderGroupResponseDto(orderGroup, ordersResponses);
     }
 
     /**
@@ -80,11 +82,15 @@ public class OrderGroupService {
         List<OrderGroup> orderGroups = orderGroupRepository.findByUserId(user.getId()).orElseThrow(
                 () -> new IllegalArgumentException("해당 사용자의 주문 내역이 존재하지 않습니다.")
         );
-        //로그인한 사용자의 userId로 조회하기 때문에 user 확인 생략
-        List<OrderGroupResponseDto> list = new ArrayList<>();
 
-        for(OrderGroup orderGroup : orderGroups){
-            list.add(new OrderGroupResponseDto(orderGroup));
+        List<OrderGroupResponseDto> list = new ArrayList<>();
+        List<OrdersResponse> ordersResponseList = new ArrayList<>();
+        for(OrderGroup orderGroup : orderGroups) {
+            List<Orders> orders = orderGroup.getOrders();
+            for(Orders order : orders) {
+                ordersResponseList.add(new OrdersResponse(order));
+                list.add(new OrderGroupResponseDto(orderGroup, ordersResponseList));
+            }
         }
 
         return list;
@@ -100,7 +106,13 @@ public class OrderGroupService {
         if (!UserType.ADMIN.equals(user.getUserType())) {
             orderGroup.verifyOrderGroupUser(user.getId());
         }
-        return new OrderGroupResponseDto(orderGroup);
+        List<Orders> orders = orderGroup.getOrders();
+        List<OrdersResponse> OrdersResponses = new ArrayList<>();
+        for(Orders order : orders) {
+            new OrdersResponse(order);
+        }
+
+        return new OrderGroupResponseDto(orderGroup, OrdersResponses);
     }
 
     /**

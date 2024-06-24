@@ -4,6 +4,7 @@
 @name = 홍길동
 @email = test@gmail.com
 @address = 대전 서구 둔산동
+@userType = ADMIN
 
 
 @username1 = momoysm
@@ -11,6 +12,7 @@
 @name1 = 윤성모
 @email1 = test@gmail.com
 @address1 = 서울
+@userType1 = USER
 
 @newPassword=Momosfg123@
 
@@ -23,7 +25,8 @@ Content-Type: application/json
   "password" : "{{password}}",
   "name" : "{{name}}",
   "email" : "{{email}}",
-  "address" : "{{address}}"
+  "address" : "{{address}}",
+  "userType" : "{{userType}}"
 }
 
 ###회원가입1 -> 됨
@@ -35,7 +38,8 @@ Content-Type: application/json
   "password" : "{{password1}}",
   "name" : "{{name1}}",
   "email" : "{{email1}}",
-  "address" : "{{address1}}"
+  "address" : "{{address1}}",
+  "userType" : "{{userType1}}"
 }
 
 ###로그인 -> ok
@@ -57,8 +61,8 @@ DELETE http://localhost:8080/api/users/logout
 Authorization:{{Authorization}}
 
 
-### 유저 탈퇴 => 403발생
-DELETE http://localhost:8080/api/users/withdraw
+### 유저 탈퇴 => ok
+PATCH http://localhost:8080/api/users/withdraw
 Content-Type: application/json
 Authorization:{{Authorization}}
 
@@ -83,7 +87,7 @@ Content-Type: application/json
 }
 
 ### 유저 비밀번호 변경(200) -> ok
-PUT http://localhost:8080/api/users/updatePassword
+PUT http://localhost:8080/api/users/update-password
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -93,7 +97,7 @@ Content-Type: application/json
 }
 
 ### 유저 비밀번호 변경(새로운 비밀번호와 기존 비밀번호가 동일합니다.) -> ok
-PUT http://localhost:8080/api/users/updatePassword
+PUT http://localhost:8080/api/users/update-password
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -103,7 +107,7 @@ Content-Type: application/json
 }
 
 ### 유저 비밀번호 변경(현재 비밀번호가 일치하지 않습니다.) -> ok
-PUT http://localhost:8080/api/users/updatePassword
+PUT http://localhost:8080/api/users/update-password
 Authorization: {{Authorization}}
 Content-Type: application/json
 
@@ -113,7 +117,7 @@ Content-Type: application/json
 }
 
 ### 유저 비밀번호 변경(새로운 비밀번호는 최근 사용한 비밀번호와 다르게 설정해야 합니다) -> ok
-PUT http://localhost:8080/api/users/updatePassword
+PUT http://localhost:8080/api/users/update-password
 Authorization: {{Authorization}}
 Content-Type: application/json
 

@@ -39,7 +39,7 @@ public class UserService {
 
         //비밀번호 암호화
         String password = passwordEncoder.encode(request.getPassword());
-        User user = new User(request, password, UserType.USER, UserStatus.JOIN, LocalDateTime.now());
+        User user = new User(request, password, request.getUserType(), UserStatus.JOIN, LocalDateTime.now());
 
         userRepository.save(user);
 
@@ -72,9 +72,7 @@ public class UserService {
     @Transactional
     public Long logout(Long userId) {
         //사용자 조회
-        User user = userRepository.findById(userId).orElseThrow(
-                () ->new IllegalArgumentException("사용자가 존재하지 않습니다.")
-        );
+        User user = findById(userId);
 
         refreshTokenService.deleteToken(user.getUsername());
 
@@ -154,9 +152,7 @@ public class UserService {
      */
     @Transactional
     public AdminUserResponse updateUser(AdminUpdateUserRequest request, Long userId) {
-        User findUser = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalArgumentException("해당 사용자는 존재하지 않습니다.")
-        );
+        User findUser = findById(userId);
 
         findUser.adminUpdateUser(request);
 
@@ -180,6 +176,15 @@ public class UserService {
         if (findUser.isPresent()) {
             throw new UserException("중복된 username 입니다.");
         }
+    }
+
+    /**
+     * PK로 user 찾기
+     */
+    public User findById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(
+                () -> new IllegalArgumentException("해당 사용자는 존재하지 않습니다.")
+        );
     }
 
 }

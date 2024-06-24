@@ -13,13 +13,13 @@ public class OrderGroupResponseDto {
     private final String address;
     private final Long totalPrice;
     private final OrderStatus status;
-    private final List<Orders> orders;
+    private final List<OrdersResponse> OrdersResponses;
 
-    public OrderGroupResponseDto(OrderGroup orderGroup) {
+    public OrderGroupResponseDto(OrderGroup orderGroup, List<OrdersResponse> OrdersResponses) {
         this.groupId = orderGroup.getId();
         this.address = orderGroup.getAddress();
         this.totalPrice = orderGroup.getTotalPrice();
         this.status = orderGroup.getStatus();
-        this.orders = orderGroup.getOrders();
+        this.OrdersResponses = OrdersResponses;
     }
 }

@@ -70,7 +70,7 @@ public class SecurityConfig {
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll() //resource 접근 허용 설정
                 // /api/users/login.hasrole  << 특정 사용자한테만 허가
                 .requestMatchers(HttpMethod.POST,"/api/users/signup").permitAll()
-                .requestMatchers("/v3/api-docs/**","/swagger-ui/**","/swagger-ui.html").permitAll()//스웨거를 위한 허용
+                .requestMatchers(HttpMethod.GET,"/api/products/**").permitAll()
                 .anyRequest().authenticated()
         );
 

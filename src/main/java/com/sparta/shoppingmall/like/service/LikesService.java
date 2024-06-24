@@ -9,11 +9,13 @@ import com.sparta.shoppingmall.like.repository.LikesRepository;
 import com.sparta.shoppingmall.product.service.ProductService;
 import com.sparta.shoppingmall.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LikesService {
@@ -68,7 +70,7 @@ public class LikesService {
      * 좋아요 취소
      */
     private void cancelLike(Likes likes, Long userId) {
-        likes.doLike(userId);
+        likes.cancelLike(userId);
 
         Long contentId = likes.getContentId();
         switch (likes.getContentType()){

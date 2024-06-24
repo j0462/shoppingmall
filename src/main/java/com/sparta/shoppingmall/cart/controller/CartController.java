@@ -8,9 +8,7 @@ import com.sparta.shoppingmall.cart.service.CartService;
 import com.sparta.shoppingmall.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.sparta.shoppingmall.util.ControllerUtil.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/carts")
@@ -50,15 +49,11 @@ public class CartController {
      */
     @GetMapping("/products")
     public ResponseEntity<CommonResponse> getCartProducts(
-            @PageableDefault(
-                    size = 5,
-                    sort = "createdAt",
-                    direction = Sort.Direction.DESC
-            ) Pageable pageable,
+            @RequestParam int page,
             @AuthenticationPrincipal UserDetailsImpl userDetails
     ) {
         try{
-            CartResponse response = cartService.getCartProducts(pageable, userDetails.getUser());
+            CartResponse response = cartService.getCartProducts(page, userDetails.getUser());
             return getResponseEntity(response, "장바구니 조회 성공");
         } catch (Exception e) {
             return getBadRequestResponseEntity(e);

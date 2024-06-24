@@ -29,6 +29,7 @@ public class OrderGroup extends Timestamped {
     private Long totalPrice;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
 
     @OneToMany(mappedBy = "orderGroup", cascade = CascadeType.ALL, orphanRemoval = true)

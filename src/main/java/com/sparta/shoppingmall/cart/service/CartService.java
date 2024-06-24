@@ -13,6 +13,7 @@ import com.sparta.shoppingmall.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,7 @@ public class CartService {
     public CartProductResponse addCartProduct(CartProductRequest request, User user) {
         Product product = productService.findByProductId(request.getProductId());
         //상품 상태 체크
-        if(product.checkProductStatus()){
+        if(!product.checkProductStatus()){
             throw new IllegalArgumentException("판매 중인 상품이 아닙니다.");
         }
 
@@ -60,7 +61,8 @@ public class CartService {
      * 장바구니에 상품 리스트 조회
      */
     @Transactional
-    public CartResponse getCartProducts(Pageable pageable, User user) {
+    public CartResponse getCartProducts(int page, User user) {
+        Pageable pageable = PageRequest.of(page-1, 5);
         Cart cart = user.getCart();
 
         //상품 상태 확인 후 삭제
@@ -84,7 +86,9 @@ public class CartService {
      */
     @Transactional
     public Long deleteCartProduct(Long productId, User user) {
-        Cart cart = user.getCart();
+        Cart cart = cartRepository.findByUserId(user.getId()).orElseThrow(
+                () -> new IllegalArgumentException("장바구니가 존재하지 않습니다. 상품을 담은 후 시도해주세요")
+        );
 
         CartProduct cartProduct = cartProductRepository.findByProductId(productId).orElseThrow(
                 () -> new IllegalArgumentException("해당 상품이 장바구니에 없습니다.")

@@ -21,7 +21,7 @@ import static com.sparta.shoppingmall.util.ControllerUtil.*;
 @RequestMapping("/api/orders")
 public class OrderGroupController {
 
-    private OrderGroupService orderGroupService;
+    private final OrderGroupService orderGroupService;
 
     /**
      * 상품 주문

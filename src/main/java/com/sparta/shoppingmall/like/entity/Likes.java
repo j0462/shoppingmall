@@ -49,6 +49,7 @@ public class Likes extends Timestamped {
         this.contentType = likesRequest.getContentType();
         this.contentId = likesRequest.getContentId();
         this.status = LikeStatus.CANCELED;
+        this.user = user;
     }
 
     /**

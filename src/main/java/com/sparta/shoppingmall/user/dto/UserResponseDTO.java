@@ -16,16 +16,16 @@ public class UserResponseDTO {
 
     private final String address;
 
-    private final LocalDateTime createAt;
+    private final LocalDateTime createdAt;
 
-    private final LocalDateTime uodateAt;
+    private final LocalDateTime updatedAt;
 
     public UserResponseDTO(User user) {
         this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.address = user.getAddress();
-        this.createAt = user.getCreateAt();
-        this.uodateAt = user.getUpdateAt();
+        this.createdAt = user.getCreateAt();
+        this.updatedAt = user.getUpdateAt();
     }
 }

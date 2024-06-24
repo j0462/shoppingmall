@@ -6,6 +6,7 @@ import com.sparta.shoppingmall.user.dto.*;
 import com.sparta.shoppingmall.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static com.sparta.shoppingmall.util.ControllerUtil.*;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
@@ -35,6 +37,7 @@ public class UserController {
             return getFieldErrorResponseEntity(bindingResult, "회원가입 실패");
         }
         try{
+            log.info("test");
             SignupResponseDTO response = userService.createUser(requestDTO);
             return getResponseEntity(response, "회원가입 성공");
         } catch (Exception e) {
@@ -140,9 +143,7 @@ public class UserController {
      */
     @Secured("ADMIN")
     @GetMapping("/admin")
-    public ResponseEntity<CommonResponse> getUserList(
-            @AuthenticationPrincipal UserDetailsImpl userDetails
-    ){
+    public ResponseEntity<CommonResponse> getUserList(){
         try{
             List<AdminUserResponse> response = userService.getUserList();
             return getResponseEntity(response, "회원 전체 조회 성공");
@@ -158,8 +159,7 @@ public class UserController {
     @PutMapping("/{userId}/admin")
     public ResponseEntity<CommonResponse> updateUser(
             @PathVariable Long userId,
-            @Valid @RequestBody AdminUpdateUserRequest request,
-            @AuthenticationPrincipal UserDetailsImpl userDetails
+            @Valid @RequestBody AdminUpdateUserRequest request
     ) {
         try{
             AdminUserResponse response = userService.updateUser(request, userId);
