@@ -2,6 +2,8 @@ package com.sparta.shoppingmall.user.service;
 
 
 import com.sparta.shoppingmall.jwt.RefreshTokenService;
+import com.sparta.shoppingmall.like.entity.ContentType;
+import com.sparta.shoppingmall.like.repository.LikesRepository;
 import com.sparta.shoppingmall.user.dto.*;
 import com.sparta.shoppingmall.user.entity.User;
 import com.sparta.shoppingmall.user.entity.UserStatus;
@@ -28,6 +30,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     private final RefreshTokenService refreshTokenService;
+    private final LikesRepository likesRepository;
 
     /**
      * 회원 가입
@@ -187,4 +190,22 @@ public class UserService {
         );
     }
 
+    /**
+     * 프로필 조회 좋아요갯수 추가
+     */
+    public EditProfileResponseDTO inquiryUser2(Long userId, User loggedInUser) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+
+        int likedProductsCount = likesRepository.countByUserAndContentType(user, ContentType.PRODUCT);
+        int likedCommentsCount = likesRepository.countByUserAndContentType(user, ContentType.COMMENT);
+
+        return new EditProfileResponseDTO(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getAddress(),
+                likedProductsCount,
+                likedCommentsCount
+        );
+    }
 }

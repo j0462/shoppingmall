@@ -23,6 +23,10 @@ public class EditProfileResponseDTO {
 
     private final LocalDateTime updateAt;
 
+    private int likedProductsCount;
+
+    private int likedCommentsCount;
+
 
     public EditProfileResponseDTO(User user) {
         this.id = user.getId();
@@ -31,5 +35,16 @@ public class EditProfileResponseDTO {
         this.address = user.getAddress();
         this.createAt = user.getCreateAt();
         this.updateAt = user.getUpdateAt();
+    }
+
+    public EditProfileResponseDTO(Long userId, String username, String email, String address, int likedProductsCount, int likedCommentsCount) {
+        this.id = userId;
+        this.username = username;
+        this.email = email;
+        this.address = address;
+        this.createAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
+        this.likedProductsCount = likedProductsCount;
+        this.likedCommentsCount = likedCommentsCount;
     }
 }

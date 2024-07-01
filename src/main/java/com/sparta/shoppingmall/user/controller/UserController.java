@@ -168,4 +168,20 @@ public class UserController {
             return getBadRequestResponseEntity(e);
         }
     }
+
+    /**
+     * 로그인한 사용자 프로필 조회
+     */
+    @GetMapping("/{userId}/profiles2")
+    public ResponseEntity<CommonResponse> userProfile2(
+            @PathVariable Long userId,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        try {
+            EditProfileResponseDTO response = userService.inquiryUser2(userId, userDetails.getUser());
+            return getResponseEntity(response, "프로필 조회 성공");
+        } catch (Exception e) {
+            return getBadRequestResponseEntity(e);
+        }
+    }
 }
