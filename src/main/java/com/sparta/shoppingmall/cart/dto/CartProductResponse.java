@@ -1,7 +1,7 @@
 package com.sparta.shoppingmall.cart.dto;
 
 import com.sparta.shoppingmall.cart.entity.Cart;
-import com.sparta.shoppingmall.product.entity.Product;
+import com.sparta.shoppingmall.product.controller.entity.Product;
 import lombok.Getter;
 
 @Getter

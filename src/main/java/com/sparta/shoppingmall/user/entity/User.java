@@ -6,7 +6,7 @@ import com.sparta.shoppingmall.comment.entity.Comment;
 import com.sparta.shoppingmall.follows.entity.Follows;
 import com.sparta.shoppingmall.like.entity.Likes;
 import com.sparta.shoppingmall.order.entity.OrderGroup;
-import com.sparta.shoppingmall.product.entity.Product;
+import com.sparta.shoppingmall.product.controller.entity.Product;
 import com.sparta.shoppingmall.user.dto.AdminUpdateUserRequest;
 import com.sparta.shoppingmall.user.dto.SignupRequestDTO;
 import jakarta.persistence.*;

@@ -1,4 +1,4 @@
-package com.sparta.shoppingmall.product.entity;
+package com.sparta.shoppingmall.product.controller.entity;
 
 import lombok.Getter;
 

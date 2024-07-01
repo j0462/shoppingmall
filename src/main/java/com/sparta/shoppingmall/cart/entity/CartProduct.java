@@ -1,7 +1,7 @@
 package com.sparta.shoppingmall.cart.entity;
 
 import com.sparta.shoppingmall.base.entity.Timestamped;
-import com.sparta.shoppingmall.product.entity.Product;
+import com.sparta.shoppingmall.product.controller.entity.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;

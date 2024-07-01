@@ -1,7 +1,6 @@
 package com.sparta.shoppingmall.order.entity;
 
 import com.sparta.shoppingmall.base.entity.Timestamped;
-import com.sparta.shoppingmall.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.*;
 

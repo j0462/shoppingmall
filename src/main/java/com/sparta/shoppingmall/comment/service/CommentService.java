@@ -4,7 +4,7 @@ import com.sparta.shoppingmall.comment.dto.CommentRequest;
 import com.sparta.shoppingmall.comment.dto.CommentResponse;
 import com.sparta.shoppingmall.comment.entity.Comment;
 import com.sparta.shoppingmall.comment.repository.CommentRepository;
-import com.sparta.shoppingmall.product.entity.Product;
+import com.sparta.shoppingmall.product.controller.entity.Product;
 import com.sparta.shoppingmall.product.service.ProductService;
 import com.sparta.shoppingmall.user.entity.User;
 import com.sparta.shoppingmall.user.entity.UserType;

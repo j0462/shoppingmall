@@ -1,4 +1,4 @@
-package com.sparta.shoppingmall.product.entity;
+package com.sparta.shoppingmall.product.controller.entity;
 
 import com.sparta.shoppingmall.base.entity.Timestamped;
 import com.sparta.shoppingmall.comment.entity.Comment;
