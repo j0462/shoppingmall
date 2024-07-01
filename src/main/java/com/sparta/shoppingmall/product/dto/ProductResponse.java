@@ -1,5 +1,6 @@
 package com.sparta.shoppingmall.product.dto;
 
+import com.sparta.shoppingmall.product.controller.entity.Product;
 import com.sparta.shoppingmall.product.controller.entity.ProductStatus;
 import com.sparta.shoppingmall.user.entity.User;
 import lombok.Builder;
@@ -25,5 +26,15 @@ public class ProductResponse {
         this.price = price;
         this.status = status;
         this.likeCount = likeCount;
+    }
+
+    public static ProductResponse from(Product product) {
+        return ProductResponse.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .price(product.getPrice())
+                .status(product.getStatus())
+                .likeCount(product.getLikeCount())
+                .build();
     }
 }

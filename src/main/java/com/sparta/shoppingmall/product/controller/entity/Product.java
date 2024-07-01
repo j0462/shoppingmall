@@ -2,6 +2,7 @@ package com.sparta.shoppingmall.product.controller.entity;
 
 import com.sparta.shoppingmall.base.entity.Timestamped;
 import com.sparta.shoppingmall.comment.entity.Comment;
+import com.sparta.shoppingmall.like.entity.Likes;
 import com.sparta.shoppingmall.order.entity.OrderGroup;
 import com.sparta.shoppingmall.user.entity.User;
 import jakarta.persistence.*;
@@ -41,6 +42,9 @@ public class Product extends Timestamped {
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Likes> likes = new ArrayList<>();
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)

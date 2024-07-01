@@ -1,6 +1,8 @@
 package com.sparta.shoppingmall.product.service;
 
 import com.sparta.shoppingmall.exception.UserMismatchException;
+import com.sparta.shoppingmall.like.entity.Likes;
+import com.sparta.shoppingmall.like.repository.LikesRepository;
 import com.sparta.shoppingmall.product.dto.ProductRequest;
 import com.sparta.shoppingmall.product.dto.ProductResponse;
 import com.sparta.shoppingmall.product.controller.entity.Product;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -28,6 +31,7 @@ public class ProductService {
 
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
+    private final LikesRepository likeRepository;
 
     /**
      * 상품등록
@@ -163,4 +167,14 @@ public class ProductService {
         );
     }
 
+    /**
+     * 좋아요 상품 정렬조회
+     */
+    public List<ProductResponse> getLikedProducts(User user, int page) {
+        Pageable pageable = PageRequest.of(page, 5); // 페이지 당 5개의 데이터
+        return likeRepository.findByUser(user, pageable)
+                .stream()
+                .map(like -> ProductResponse.from(like.getProduct()))
+                .collect(Collectors.toList());
+    }
 }

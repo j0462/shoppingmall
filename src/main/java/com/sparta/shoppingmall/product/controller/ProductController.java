@@ -107,5 +107,21 @@ public class ProductController {
             return getBadRequestResponseEntity(e);
         }
     }
+
+    /**
+     * 좋아요한 상품 정렬조회
+     */
+    @GetMapping("/liked")
+    public ResponseEntity<CommonResponse> getLikedProducts(
+            @RequestParam int page,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        try {
+            List<ProductResponse> response = productService.getLikedProducts(userDetails.getUser(), page);
+            return getResponseEntity(response, "좋아요 한 상품 목록 조회 성공");
+        } catch (Exception e) {
+            return getBadRequestResponseEntity(e);
+        }
+    }
 }
 
