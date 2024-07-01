@@ -1,6 +1,6 @@
 package com.sparta.shoppingmall.product.dto;
 
-import com.sparta.shoppingmall.product.entity.ProductStatus;
+import com.sparta.shoppingmall.product.controller.entity.ProductStatus;
 import com.sparta.shoppingmall.user.entity.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,14 +14,16 @@ public class ProductResponse {
     private final String name;
     private final Long price;
     private final ProductStatus status;
+    private final int likeCount;
 
     @Builder
-    public ProductResponse(Long id, String name, Long price, ProductStatus status, User user) {
+    public ProductResponse(Long id, String name, Long price, ProductStatus status, User user, int likeCount) {
         this.id = id;
         this.userId = user.getId();
         this.username = user.getUsername(); //사용자 ID
         this.name = name;
         this.price = price;
         this.status = status;
+        this.likeCount = likeCount;
     }
 }

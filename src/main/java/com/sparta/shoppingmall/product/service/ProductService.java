@@ -3,8 +3,8 @@ package com.sparta.shoppingmall.product.service;
 import com.sparta.shoppingmall.exception.UserMismatchException;
 import com.sparta.shoppingmall.product.dto.ProductRequest;
 import com.sparta.shoppingmall.product.dto.ProductResponse;
-import com.sparta.shoppingmall.product.entity.Product;
-import com.sparta.shoppingmall.product.entity.ProductStatus;
+import com.sparta.shoppingmall.product.controller.entity.Product;
+import com.sparta.shoppingmall.product.controller.entity.ProductStatus;
 import com.sparta.shoppingmall.product.repository.ProductRepository;
 import com.sparta.shoppingmall.user.entity.User;
 import com.sparta.shoppingmall.user.entity.UserType;
@@ -78,6 +78,7 @@ public class ProductService {
                     .price(product.getPrice())
                     .status(product.getStatus())
                     .user(product.getUser())
+                    .likeCount(product.getLikeCount())
                     .build();
             productResponses.add(productResponse);
         }
