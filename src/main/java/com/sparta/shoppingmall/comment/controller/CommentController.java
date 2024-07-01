@@ -99,4 +99,19 @@ public class CommentController {
         }
     }
 
+    /**
+     * 좋아요 한 댓글 조회
+     */
+    @GetMapping("/liked")
+    public ResponseEntity<CommonResponse> getLikedComments(
+            @RequestParam int page,
+            @AuthenticationPrincipal UserDetailsImpl userDetails
+    ) {
+        try {
+            List<CommentResponse> response = commentService.getLikedComments(userDetails.getUser(), page);
+            return getResponseEntity(response, "좋아요 한 댓글 목록 조회 성공");
+        } catch (Exception e) {
+            return getBadRequestResponseEntity(e);
+        }
+    }
 }
