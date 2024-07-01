@@ -26,5 +26,6 @@ spring:
 #logging.level:
   #root: info
 
+
 jwt:
   secret-key: ${JWT-SECRET-KEY}
