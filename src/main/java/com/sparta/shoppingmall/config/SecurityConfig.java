@@ -71,6 +71,8 @@ public class SecurityConfig {
                 // /api/users/login.hasrole  << 특정 사용자한테만 허가
                 .requestMatchers(HttpMethod.POST,"/api/users/signup").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/products/**").permitAll()
+                .requestMatchers(HttpMethod.POST,"/api/comments/**").permitAll()
                 .anyRequest().authenticated()
         );
 

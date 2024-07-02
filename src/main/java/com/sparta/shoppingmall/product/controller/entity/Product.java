@@ -103,4 +103,8 @@ public class Product extends Timestamped {
         this.likeCount--;
     }
 
+    // 테스트용 setId 메서드 추가
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
