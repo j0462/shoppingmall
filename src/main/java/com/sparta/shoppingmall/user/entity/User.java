@@ -165,4 +165,9 @@ public class User extends Timestamped {
         this.userType = request.getUserType();
         this.userStatus = request.getUserStatus();
     }
+
+    // 테스트용 setId 메서드 추가
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
