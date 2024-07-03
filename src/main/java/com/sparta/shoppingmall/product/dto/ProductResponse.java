@@ -28,12 +28,13 @@ public class ProductResponse {
         this.likeCount = likeCount;
     }
 
-    public static ProductResponse from(Product product) {
+    public static ProductResponse from(Product product, User user) {
         return ProductResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .price(product.getPrice())
                 .status(product.getStatus())
+                .user(user)
                 .likeCount(product.getLikeCount())
                 .build();
     }

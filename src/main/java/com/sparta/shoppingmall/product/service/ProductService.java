@@ -174,7 +174,7 @@ public class ProductService {
         Pageable pageable = PageRequest.of(page, 5); // 페이지 당 5개의 데이터
         return likeRepository.findByUser(user, pageable)
                 .stream()
-                .map(like -> ProductResponse.from(like.getProduct()))
+                .map(like -> ProductResponse.from(like.getProduct(), user))
                 .collect(Collectors.toList());
     }
 }

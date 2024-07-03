@@ -3,6 +3,7 @@ package com.sparta.shoppingmall.like.entity;
 import com.sparta.shoppingmall.base.entity.Timestamped;
 import com.sparta.shoppingmall.like.dto.LikesRequest;
 import com.sparta.shoppingmall.product.controller.entity.Product;
+import com.sparta.shoppingmall.product.repository.ProductRepository;
 import com.sparta.shoppingmall.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -82,4 +83,8 @@ public class Likes extends Timestamped {
         }
     }
 
+    // 테스트용 setProduct 메서드 추가
+    public void setPrduct(Product product) {
+        this.product = product;
+    }
 }
